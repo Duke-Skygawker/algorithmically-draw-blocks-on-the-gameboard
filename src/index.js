@@ -1,48 +1,72 @@
 import "./style.css";
+import Block from "./Block";
 
 const grid = document.getElementById("grid");
-const blockDimensions = {
-  x: 50,
-  y: 20,
-  posX: 50,
-  posY: 20,
-};
-const gameboardDimensions = {
-  x: 800,
-  y: 600,
-};
-let rowGap = 0;
-let rowCheck = 1;
-let blockPosX = 0;
-const columnGap = 20;
-const adjustedWidth = gameboardDimensions.x - blockDimensions.x;
-const blockQuantity = [
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+const blockWidth = 100;
+const blockHeight = 20;
+const blockX = 20;
+const blockY = 560;
+const blockGap = 10;
+const rowGap = 10;
+const gameboardWidth = 800;
+const adjustedWidth = gameboardWidth - blockWidth;
+const gameboardHeight = 600;
+let rowCheck = blockX * 2;
+let currentX = blockX;
+let currentY = blockY;
+let gapCheck = 0;
+
+// all blocks
+const blocks = [
+  [1, 1, 1, 1, 1, 1, 1],
+  [0, 1, 1, 1, 1, 1, 0],
+  [0, 0, 1, 1, 1, 0, 0],
+  [0, 0, 0, 1, 0, 0, 0],
 ];
+const drawLevel = () => {
+  blocks.forEach((row) => {
+    row.forEach((item) => {
+      if (item === 1) {
+        const blocky = new Block(currentX, currentY, blockWidth, blockHeight);
+        const block = document.createElement("div");
+        block.classList.add("block");
+        block.style.left = blocky.bottomLeft[0] + "px";
+        block.style.bottom = blocky.bottomLeft[1] + "px";
+        block.style.width = `${blockWidth}px`;
+        block.style.height = `${blockHeight}px`;
+        grid.appendChild(block);
+      }
+      currentX += blockWidth + blockGap;
+      if (rowCheck > adjustedWidth - blockGap) {
+        currentY -= blockHeight + rowGap;
+        rowCheck = blockX;
+        currentX = blockX;
+        gapCheck = 0;
+      }
+      rowCheck += blockWidth + blockGap;
+    });
+  });
+};
 
-blockQuantity.forEach((item) => {
-  // create block
-  const block = document.createElement("div");
-  block.classList.add("block");
-  block.style.width = `${blockDimensions.x}px`;
-  block.style.height = `${blockDimensions.y}px`;
-  // check if the gameboard was filled horizontally
-  if (blockPosX > adjustedWidth - columnGap) {
-    blockPosX = rowCheck * columnGap;
-    rowCheck += 1;
-    // displace second row by this many pixels
-    rowGap += 10;
-  }
-  // distance from the gameboard wall of the first block
-  blockPosX += blockDimensions.x / 2;
-  block.style.left = `${blockPosX}px`;
-  // add the rest of the block width + horizontal gap between blocks
-  blockPosX += blockDimensions.x / 2 + columnGap;
-  // adjust block position depending if max width of the gameboard has been reached
-  block.style.top = `${rowCheck * blockDimensions.posY + rowGap}px`;
+drawLevel();
 
-  // add block to the gameboard
-  if (item === 1) {
-    grid.appendChild(block);
-  }
-});
+const handleInput = () => {
+  const paddle = document.getElementById("block1");
+  let dick = 100;
+  document.addEventListener("keydown", (e) => {
+    switch (e.code) {
+      case "KeyA":
+      case "ArrowLeft":
+        dick -= 10;
+        paddle.style.left = `${dick}px`;
+
+        break;
+
+      case "KeyD":
+      case "ArrowRight":
+        dick += 10;
+        paddle.style.left = `${dick}px`;
+        break;
+    }
+  });
+};
