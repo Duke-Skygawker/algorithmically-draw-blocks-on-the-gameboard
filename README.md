@@ -8,6 +8,8 @@ added block class for better readability and future collision detection
 
 all dimensions can be changed in the index.js
 
-![example screenshot for current blockQuantity](/draw%20blocks%20on%20the%20gameboard.png?raw=true "example screenshot")
-
 ![example screenshot for current blockQuantity](/example%20screen%202.png?raw=true "example screenshot")
+
+# old version
+
+![example screenshot for current blockQuantity](/draw%20blocks%20on%20the%20gameboard.png?raw=true "example screenshot")
