@@ -25,7 +25,6 @@ let rowCheck = blockX * 2;
 let currentX = blockX;
 let currentY = blockY;
 let gapCheck = 0;
-// all blocks
 const levels = [
   [
     [1, 1, 1, 1, 1, 1, 1],
@@ -43,7 +42,9 @@ const levels = [
     [1, 1, 1, 1, 1, 1, 1],
   ],
 ];
+// store populated blocks
 const currentBlocks = [];
+
 const populateBlocks = () => {
   levels[1].forEach((row) => {
     row.forEach((item) => {
@@ -82,10 +83,13 @@ const drawBlock = (blocky) => {
 };
 
 const drawLevel = () => {
+  // filter out the fragged blocks
   const newBlocks = currentBlocks.filter((block) => {
     if (block.fragged !== true) return block;
   });
+  // remove all blocks from the grid
   blockGrid.replaceChildren();
+  // re-render filtered blocks
   newBlocks.forEach((block) => {
     drawBlock(block);
   });
