@@ -4,5 +4,6 @@ export default class Block {
     this.bottomRight = [x + blockWidth, y];
     this.topLeft = [x, y + blockHeight];
     this.topRight = [x + blockWidth, y + blockHeight];
+    this.fragged = false;
   }
 }
